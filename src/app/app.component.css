@@ -1,6 +1,6 @@
 .app-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+  background: linear-gradient(135deg, #2E8B57 0%, #3CB371 100%);
   padding: 2rem 0;
   position: relative;
   margin-left: 0;
@@ -22,8 +22,8 @@
   right: 0;
   bottom: 0;
   background:
-    radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.4) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(96, 165, 250, 0.4) 0%, transparent 50%);
+    radial-gradient(circle at 20% 50%, rgba(46, 139, 87, 0.4) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(60, 179, 113, 0.4) 0%, transparent 50%);
   pointer-events: none;
 }
 

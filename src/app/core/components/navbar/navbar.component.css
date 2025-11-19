@@ -5,7 +5,7 @@
   left: 260px;
   right: 0;
   height: 80px;
-  background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+  background: linear-gradient(135deg, #2E8B57 0%, #3CB371 100%);
   z-index: 999;
   display: flex;
   align-items: center;
@@ -34,8 +34,8 @@
 }
 
 .mobile-menu-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
-  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.35);
 }
 
 .topbar-clock {
@@ -55,12 +55,13 @@
   border-color: #d1d5db;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transform: translateY(-1px);
+  background: #f5f5f5;
 }
 
 .topbar-clock-icon {
   width: 22px;
   height: 22px;
-  color: #3b82f6;
+  color: #2E8B57;
   stroke-width: 2;
   flex-shrink: 0;
 }
@@ -88,6 +89,7 @@
   border-color: #d1d5db;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transform: translateY(-1px);
+  background: #f5f5f5;
 }
 
 .topbar-user-name {
@@ -99,13 +101,13 @@
 .topbar-user-avatar {
   width: 40px;
   height: 40px;
-  background: #3b82f6;
+  background: #2E8B57;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 2px 4px rgba(46, 139, 87, 0.3);
 }
 
 .topbar-user-avatar svg {
@@ -120,7 +122,7 @@
   top: 0;
   bottom: 0;
   width: 260px;
-  background: #3b82f6;
+  background: #2E8B57;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   display: flex;
@@ -232,7 +234,7 @@
 }
 
 .sidebar-link:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
   color: white;
 }
 
@@ -248,7 +250,7 @@
   top: 1rem;
   left: 1rem;
   z-index: 1100;
-  background: #3b82f6;
+  background: #2E8B57;
   border: none;
   color: white;
   cursor: pointer;
@@ -286,7 +288,7 @@
 }
 
 .logout-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.12);
   border-color: rgba(255, 255, 255, 0.3);
 }
 
