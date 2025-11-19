@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { CreditoService } from '../../../../core/services/credito.service';
-import { Credito, TipoConsulta } from '../../../../core/models/credito.model';
+import { Credito, TipoConsulta, PagedResponse } from '../../../../core/models/credito.model';
 
 /**
  * Componente responsável pela busca de créditos.
@@ -25,16 +25,23 @@ export class CreditoSearchComponent {
   valorBusca: string = '';
 
   // Resultados e controle de estado
-  todosCreditos: Credito[] = [];
   creditos: Credito[] = [];
   loading: boolean = false;
   erro: string | null = null;
   buscaRealizada: boolean = false;
 
-  // Paginação
-  paginaAtual: number = 1;
+  // Paginação (agora controlada pelo backend)
+  paginaAtual: number = 0; // Zero-based no backend
   itensPorPagina: number = 5;
   totalPaginas: number = 0;
+  totalElementos: number = 0;
+
+  // Ordenação (agora enviada ao backend)
+  campoOrdenacao: string = 'numeroCredito';
+  direcaoOrdenacao: 'ASC' | 'DESC' = 'ASC';
+
+  // Flag para indicar se está em modo de busca específica ou listagem geral
+  modoBuscaEspecifica: boolean = false;
 
   constructor(private creditoService: CreditoService) {}
 
@@ -46,23 +53,31 @@ export class CreditoSearchComponent {
   }
 
   /**
-   * Carrega todos os créditos disponíveis
+   * Carrega todos os créditos disponíveis com paginação do backend
    */
   carregarTodos(): void {
     this.loading = true;
     this.erro = null;
+    this.modoBuscaEspecifica = false;
 
-    this.creditoService.buscarTodos().subscribe({
-      next: (resultado: Credito[]) => {
-        this.todosCreditos = resultado;
-        this.atualizarPaginacao();
+    this.creditoService.buscarTodosPaginado(
+      this.paginaAtual,
+      this.itensPorPagina,
+      this.campoOrdenacao,
+      this.direcaoOrdenacao
+    ).subscribe({
+      next: (response: PagedResponse<Credito>) => {
+        this.creditos = response.content;
+        this.totalPaginas = response.totalPages;
+        this.totalElementos = response.totalElements;
         this.buscaRealizada = true;
         this.loading = false;
       },
       error: (error: Error) => {
         // Se houver erro, apenas mostra a tela vazia para o usuário buscar
-        this.todosCreditos = [];
         this.creditos = [];
+        this.totalPaginas = 0;
+        this.totalElementos = 0;
         this.buscaRealizada = false;
         this.loading = false;
       }
@@ -71,6 +86,7 @@ export class CreditoSearchComponent {
 
   /**
    * Realiza a busca de créditos conforme o tipo selecionado
+   * Buscas específicas não usam paginação do backend (retornam poucos resultados)
    */
   buscar(): void {
     // Validação básica
@@ -82,25 +98,27 @@ export class CreditoSearchComponent {
     // Reset de estado
     this.loading = true;
     this.erro = null;
-    this.todosCreditos = [];
     this.creditos = [];
     this.buscaRealizada = false;
-    this.paginaAtual = 1;
+    this.paginaAtual = 0;
+    this.modoBuscaEspecifica = true; // Busca específica, sem paginação backend
 
     // Executa a busca apropriada
     if (this.tipoConsulta === TipoConsulta.NFSE) {
       // Busca por NFS-e (retorna array)
       this.creditoService.buscarPorNfse(this.valorBusca.trim()).subscribe({
         next: (resultado: Credito[]) => {
-          this.todosCreditos = resultado;
-          this.atualizarPaginacao();
+          this.creditos = resultado;
+          this.totalElementos = resultado.length;
+          this.totalPaginas = 1;
           this.buscaRealizada = true;
           this.loading = false;
         },
         error: (error: Error) => {
           this.erro = error.message;
-          this.todosCreditos = [];
           this.creditos = [];
+          this.totalElementos = 0;
+          this.totalPaginas = 0;
           this.buscaRealizada = true;
           this.loading = false;
         }
@@ -109,15 +127,17 @@ export class CreditoSearchComponent {
       // Busca por número de crédito (retorna objeto único)
       this.creditoService.buscarPorNumeroCredito(this.valorBusca.trim()).subscribe({
         next: (resultado: Credito) => {
-          this.todosCreditos = [resultado];
-          this.atualizarPaginacao();
+          this.creditos = [resultado];
+          this.totalElementos = 1;
+          this.totalPaginas = 1;
           this.buscaRealizada = true;
           this.loading = false;
         },
         error: (error: Error) => {
           this.erro = error.message;
-          this.todosCreditos = [];
           this.creditos = [];
+          this.totalElementos = 0;
+          this.totalPaginas = 0;
           this.buscaRealizada = true;
           this.loading = false;
         }
@@ -126,51 +146,70 @@ export class CreditoSearchComponent {
   }
 
   /**
-   * Limpa o formulário e resultados
+   * Limpa o formulário e recarrega todos os registros
    */
   limpar(): void {
     this.valorBusca = '';
-    this.todosCreditos = [];
-    this.creditos = [];
     this.erro = null;
-    this.buscaRealizada = false;
     this.tipoConsulta = TipoConsulta.NFSE;
-    this.paginaAtual = 1;
+    this.paginaAtual = 0;
+
+    // Recarrega todos os registros
+    this.carregarTodos();
   }
 
   /**
-   * Atualiza a paginação com base nos resultados
+   * Ordena os créditos por um campo específico
+   * Agora a ordenação é feita pelo backend
    */
-  atualizarPaginacao(): void {
-    this.totalPaginas = Math.ceil(this.todosCreditos.length / this.itensPorPagina);
-    this.atualizarPaginaAtual();
-  }
+  ordenarPor(campo: string): void {
+    // Se clicar no mesmo campo, inverte a direção
+    if (this.campoOrdenacao === campo) {
+      this.direcaoOrdenacao = this.direcaoOrdenacao === 'ASC' ? 'DESC' : 'ASC';
+    } else {
+      // Se for um campo novo, sempre começa com ascendente
+      this.campoOrdenacao = campo;
+      this.direcaoOrdenacao = 'ASC';
+    }
 
-  /**
-   * Atualiza os itens da página atual
-   */
-  atualizarPaginaAtual(): void {
-    const inicio = (this.paginaAtual - 1) * this.itensPorPagina;
-    const fim = inicio + this.itensPorPagina;
-    this.creditos = this.todosCreditos.slice(inicio, fim);
+    // Volta para primeira página e recarrega com nova ordenação
+    this.paginaAtual = 0;
+
+    // Se estiver em modo busca específica, não recarrega (poucos itens)
+    if (!this.modoBuscaEspecifica) {
+      this.carregarTodos();
+    }
   }
 
   /**
    * Muda para uma página específica
+   * Agora busca diretamente do backend
    */
   irParaPagina(pagina: number): void {
-    if (pagina >= 1 && pagina <= this.totalPaginas) {
-      this.paginaAtual = pagina;
-      this.atualizarPaginaAtual();
+    // Converte de 1-based (UI) para 0-based (backend)
+    const paginaZeroBased = pagina - 1;
+
+    if (paginaZeroBased >= 0 && paginaZeroBased < this.totalPaginas) {
+      this.paginaAtual = paginaZeroBased;
+
+      // Se estiver em modo busca específica, não recarrega
+      if (!this.modoBuscaEspecifica) {
+        this.carregarTodos();
+      }
     }
   }
 
   /**
    * Muda a quantidade de itens por página
+   * Reinicia na primeira página e recarrega do backend
    */
   mudarItensPorPagina(): void {
-    this.paginaAtual = 1;
-    this.atualizarPaginacao();
+    this.paginaAtual = 0;
+
+    // Se estiver em modo busca específica, não recarrega
+    if (!this.modoBuscaEspecifica) {
+      this.carregarTodos();
+    }
   }
 
   /**
@@ -185,5 +224,12 @@ export class CreditoSearchComponent {
    */
   get buscarHabilitado(): boolean {
     return this.valorBusca.trim().length > 0 && !this.loading;
+  }
+
+  /**
+   * Retorna o número da página atual em formato 1-based para exibição
+   */
+  get paginaAtualExibicao(): number {
+    return this.paginaAtual + 1;
   }
 }

@@ -30,3 +30,20 @@ export interface BuscaParams {
   tipo: TipoConsulta;
   valor: string;
 }
+
+/**
+ * Interface genérica para resposta paginada da API
+ */
+export interface PagedResponse<T> {
+  content: T[];
+  pageNumber: number;
+  pageSize: number;
+  totalElements: number;
+  totalPages: number;
+  first: boolean;
+  last: boolean;
+  hasPrevious: boolean;
+  hasNext: boolean;
+  sortBy?: string;
+  sortDirection?: string;
+}

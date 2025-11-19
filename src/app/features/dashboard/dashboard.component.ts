@@ -18,7 +18,7 @@ export class DashboardComponent {
       title: 'Total de Créditos',
       value: '10',
       icon: 'document',
-      color: '#1e40af'
+      color: '#3b82f6'
     },
     {
       title: 'Valor Total ISSQN',

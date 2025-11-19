@@ -117,16 +117,86 @@
       <table class="table">
         <thead>
           <tr>
-            <th>Nº Crédito</th>
-            <th>Nº NFS-e</th>
-            <th>Data</th>
-            <th>Tipo</th>
-            <th>Valor ISSQN</th>
-            <th>Simples Nacional</th>
-            <th>Alíquota</th>
-            <th>Valor Faturado</th>
-            <th>Dedução</th>
-            <th>Base Cálculo</th>
+            <th class="th-sortable" (click)="ordenarPor('numeroCredito')">
+              <span class="th-content">
+                Nº Crédito
+                <svg class="sort-icon" [class.active]="campoOrdenacao === 'numeroCredito'" [class.desc]="campoOrdenacao === 'numeroCredito' && direcaoOrdenacao === 'DESC'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12" />
+                </svg>
+              </span>
+            </th>
+            <th class="th-sortable" (click)="ordenarPor('numeroNfse')">
+              <span class="th-content">
+                Nº NFS-e
+                <svg class="sort-icon" [class.active]="campoOrdenacao === 'numeroNfse'" [class.desc]="campoOrdenacao === 'numeroNfse' && direcaoOrdenacao === 'DESC'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12" />
+                </svg>
+              </span>
+            </th>
+            <th class="th-sortable" (click)="ordenarPor('dataConstituicao')">
+              <span class="th-content">
+                Data
+                <svg class="sort-icon" [class.active]="campoOrdenacao === 'dataConstituicao'" [class.desc]="campoOrdenacao === 'dataConstituicao' && direcaoOrdenacao === 'DESC'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12" />
+                </svg>
+              </span>
+            </th>
+            <th class="th-sortable" (click)="ordenarPor('tipoCredito')">
+              <span class="th-content">
+                Tipo
+                <svg class="sort-icon" [class.active]="campoOrdenacao === 'tipoCredito'" [class.desc]="campoOrdenacao === 'tipoCredito' && direcaoOrdenacao === 'DESC'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12" />
+                </svg>
+              </span>
+            </th>
+            <th class="th-sortable" (click)="ordenarPor('valorIssqn')">
+              <span class="th-content">
+                Valor ISSQN
+                <svg class="sort-icon" [class.active]="campoOrdenacao === 'valorIssqn'" [class.desc]="campoOrdenacao === 'valorIssqn' && direcaoOrdenacao === 'DESC'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12" />
+                </svg>
+              </span>
+            </th>
+            <th class="th-sortable" (click)="ordenarPor('simplesNacional')">
+              <span class="th-content">
+                Simples Nacional
+                <svg class="sort-icon" [class.active]="campoOrdenacao === 'simplesNacional'" [class.desc]="campoOrdenacao === 'simplesNacional' && direcaoOrdenacao === 'DESC'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12" />
+                </svg>
+              </span>
+            </th>
+            <th class="th-sortable" (click)="ordenarPor('aliquota')">
+              <span class="th-content">
+                Alíquota
+                <svg class="sort-icon" [class.active]="campoOrdenacao === 'aliquota'" [class.desc]="campoOrdenacao === 'aliquota' && direcaoOrdenacao === 'DESC'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12" />
+                </svg>
+              </span>
+            </th>
+            <th class="th-sortable" (click)="ordenarPor('valorFaturado')">
+              <span class="th-content">
+                Valor Faturado
+                <svg class="sort-icon" [class.active]="campoOrdenacao === 'valorFaturado'" [class.desc]="campoOrdenacao === 'valorFaturado' && direcaoOrdenacao === 'DESC'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12" />
+                </svg>
+              </span>
+            </th>
+            <th class="th-sortable" (click)="ordenarPor('valorDeducao')">
+              <span class="th-content">
+                Dedução
+                <svg class="sort-icon" [class.active]="campoOrdenacao === 'valorDeducao'" [class.desc]="campoOrdenacao === 'valorDeducao' && direcaoOrdenacao === 'DESC'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12" />
+                </svg>
+              </span>
+            </th>
+            <th class="th-sortable" (click)="ordenarPor('baseCalculo')">
+              <span class="th-content">
+                Base Cálculo
+                <svg class="sort-icon" [class.active]="campoOrdenacao === 'baseCalculo'" [class.desc]="campoOrdenacao === 'baseCalculo' && direcaoOrdenacao === 'DESC'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12" />
+                </svg>
+              </span>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -157,7 +227,7 @@
     <!-- Paginação -->
     <div class="pagination-wrapper">
       <div class="pagination" *ngIf="totalPaginas > 1">
-        <button class="pagination-btn" [disabled]="paginaAtual === 1" (click)="irParaPagina(paginaAtual - 1)">
+        <button class="pagination-btn" [disabled]="paginaAtualExibicao === 1" (click)="irParaPagina(paginaAtualExibicao - 1)">
           <svg class="pagination-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
           </svg>
@@ -165,12 +235,12 @@
         </button>
 
         <div class="pagination-info">
-          <span class="pagination-text">Página {{ paginaAtual }} de {{ totalPaginas }}</span>
+          <span class="pagination-text">Página {{ paginaAtualExibicao }} de {{ totalPaginas }}</span>
           <span class="pagination-separator">•</span>
-          <span class="pagination-text">{{ todosCreditos.length }} registros</span>
+          <span class="pagination-text">{{ totalElementos }} registros</span>
         </div>
 
-        <button class="pagination-btn" [disabled]="paginaAtual === totalPaginas" (click)="irParaPagina(paginaAtual + 1)">
+        <button class="pagination-btn" [disabled]="paginaAtualExibicao === totalPaginas" (click)="irParaPagina(paginaAtualExibicao + 1)">
           Próxima
           <svg class="pagination-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
-import { Credito } from '../models/credito.model';
+import { Credito, PagedResponse } from '../models/credito.model';
 import { environment } from '../../../environments/environment';
 
 /**
@@ -18,11 +18,39 @@ export class CreditoService {
   constructor(private http: HttpClient) {}
 
   /**
-   * Busca todos os créditos disponíveis
+   * Busca todos os créditos disponíveis (sem paginação)
+   * @deprecated Use buscarTodosPaginado para melhor performance
    */
   buscarTodos(): Observable<Credito[]> {
     const url = `${this.apiUrl}/creditos`;
     return this.http.get<Credito[]>(url).pipe(
+      retry(2),
+      catchError(this.handleError)
+    );
+  }
+
+  /**
+   * Busca todos os créditos com paginação e ordenação
+   * @param page Número da página (zero-based)
+   * @param size Tamanho da página
+   * @param sortBy Campo para ordenação
+   * @param direction Direção da ordenação (ASC ou DESC)
+   * @returns Observable com resposta paginada
+   */
+  buscarTodosPaginado(
+    page: number,
+    size: number,
+    sortBy: string = 'numeroCredito',
+    direction: string = 'ASC'
+  ): Observable<PagedResponse<Credito>> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('sortBy', sortBy)
+      .set('direction', direction);
+
+    const url = `${this.apiUrl}/creditos`;
+    return this.http.get<PagedResponse<Credito>>(url, { params }).pipe(
       retry(2),
       catchError(this.handleError)
     );
@@ -34,7 +62,7 @@ export class CreditoService {
    * @returns Observable com lista de créditos encontrados
    */
   buscarPorNfse(numeroNfse: string): Observable<Credito[]> {
-    const url = `${this.apiUrl}/creditos/${numeroNfse}`;
+    const url = `${this.apiUrl}/creditos/nfse/${numeroNfse}`;
     return this.http.get<Credito[]>(url).pipe(
       retry(2), // Tenta novamente até 2 vezes em caso de erro
       catchError(this.handleError)
@@ -68,6 +96,12 @@ export class CreditoService {
     } else {
       // Erro do lado do servidor
       switch (error.status) {
+        case 401:
+          errorMessage = 'Sessão expirada. Por favor, faça login novamente';
+          break;
+        case 403:
+          errorMessage = 'Acesso negado. Você não tem permissão para acessar este recurso';
+          break;
         case 404:
           errorMessage = 'Nenhum crédito encontrado com os critérios informados';
           break;

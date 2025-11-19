@@ -2,9 +2,9 @@
    PALETA DE CORES PROFISSIONAL
    =================================== */
 :root {
-  --primary: #1e40af;
-  --primary-dark: #1e3a8a;
-  --primary-light: #3b82f6;
+  --primary: #3b82f6;
+  --primary-dark: #2563eb;
+  --primary-light: #60a5fa;
 
   --gray-50: #f8fafc;
   --gray-100: #f1f5f9;
@@ -137,7 +137,7 @@
 .radio-label:has(.radio-input:checked) {
   border-color: var(--primary);
   background: #dbeafe !important;
-  box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.15);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
 .radio-input {
@@ -250,7 +250,7 @@
   background: #bfdbfe;
   border-color: var(--primary-dark);
   transform: translateY(-2px);
-  box-shadow: 0 4px 6px -1px rgba(30, 64, 175, 0.3);
+  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
 }
 
 .btn-primary:active:not(:disabled) {
@@ -272,7 +272,7 @@
   background: #bfdbfe;
   border-color: var(--primary-dark);
   transform: translateY(-2px);
-  box-shadow: 0 4px 6px -1px rgba(30, 64, 175, 0.3);
+  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
 }
 
 .btn-secondary:active:not(:disabled) {
@@ -402,12 +402,12 @@
 
 .results-count {
   padding: 0.5rem 1.125rem;
-  background: #1e40af;
+  background: #3b82f6;
   color: #f3f4f6;
   border-radius: 9999px;
   font-size: 0.875rem;
   font-weight: 700;
-  box-shadow: 0 2px 4px rgba(30, 64, 175, 0.3);
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
 }
 
 .icon-small {
@@ -433,7 +433,7 @@
 }
 
 .table thead tr {
-  background: #1e40af;
+  background: #3b82f6;
 }
 
 .table th {
@@ -526,6 +526,42 @@
   background: #ffe4e6;
   color: #e11d48;
   border: 1px solid #fecdd3;
+}
+
+/* ===================================
+   ORDENAÇÃO DE TABELA
+   =================================== */
+.th-sortable {
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.1s;
+}
+
+.th-sortable:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.th-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.sort-icon {
+  width: 16px;
+  height: 16px;
+  opacity: 0.3;
+  transition: all 0.1s;
+  flex-shrink: 0;
+}
+
+.sort-icon.active {
+  opacity: 1;
+}
+
+.sort-icon.desc {
+  transform: rotate(180deg);
 }
 
 /* ===================================

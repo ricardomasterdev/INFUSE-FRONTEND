@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './core/components/navbar/navbar.component';
+import { AuthService } from './core/services/auth.service';
 
 /**
  * Componente raiz da aplicação
@@ -16,4 +17,6 @@ import { NavbarComponent } from './core/components/navbar/navbar.component';
 })
 export class AppComponent {
   title = 'Consulta de Créditos - INFUSE';
+
+  constructor(public authService: AuthService) {}
 }
