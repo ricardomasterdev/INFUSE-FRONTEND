@@ -33,7 +33,7 @@ export class CreditoSearchComponent {
 
   // Paginação
   paginaAtual: number = 1;
-  itensPorPagina: number = 10;
+  itensPorPagina: number = 5;
   totalPaginas: number = 0;
 
   constructor(private creditoService: CreditoService) {}
